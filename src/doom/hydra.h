@@ -8,17 +8,18 @@
 #include "d_player.h"
 #include "doomdef.h"
 #include "doomstat.h"
+#include "doomtype.h"
 
 // TODO: Find a better way to interface with JS
 //                 hydra_send(cmd->forwardmove, cmd->sidemove, cmd->angleturn, cmd->chatchar, cmd->buttons, cmd->consistancy, cmd->buttons2,cmd->inventory,cmd->lookfly,cmd->arti, player_state, killcount, secretcount, itemcount, mo->health, mo->x, mo->y, mo->z, gamestate, leveltics);
-EM_ASYNC_JS(void, hydra_send, (int forwardmove, int sidemove, int angleturn, byte *chatchar, int chatchar_size, byte *buttons, byte consistency, byte buttons2, int inventory, byte lookfly, byte artyi, playerstate_t player_state, int kill_count, int secret_count, int item_count, int health, int x, int y, int z, gamestate_t gamestate, int leveltics), {
+EM_ASYNC_JS(void, hydra_send, (int forwardmove, int sidemove, int angleturn, byte chatchar, byte buttons, byte consistency, byte buttons2, int inventory, byte lookfly, byte artyi, playerstate_t player_state, int kill_count, int secret_count, int item_count, int health, int x, int y, int z, gamestate_t gamestate, int leveltics, int gamemap, int gameskill, int gameepisode), {
     await hydraSend({
     forwardMove: forwardmove,
     sideMove: sidemove,
     angleTurn: angleturn,
     chatChar: chatchar,
     buttons: buttons,
-    consistency: consistency,
+    consistancy: consistency,
     buttons2: buttons2,
     inventory: inventory,
     lookFly: lookfly,

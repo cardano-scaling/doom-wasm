@@ -920,11 +920,7 @@ void G_Ticker(void)
 
                 mo = players[i].mo;
                 if (mo) {
-<<<<<<< HEAD
-                hydra_send(cmd, player_state, killcount, secretcount, itemcount, mo->health, mo->x, mo->y, mo->z, gamestate, leveltics, gamemap, gameskill, gameepisode);
-=======
-                hydra_send(cmd->forwardmove, cmd->sidemove, cmd->angleturn, cmd->chatchar, cmd->buttons, cmd->consistancy, cmd->buttons2,cmd->inventory,cmd->lookfly,cmd->arti, player_state, killcount, secretcount, itemcount, mo->health, mo->x, mo->y, mo->z, gamestate, leveltics);
->>>>>>> 8787ec7 (temp)
+                hydra_send(cmd->forwardmove, cmd->sidemove, cmd->angleturn, cmd->chatchar, cmd->buttons, cmd->consistancy, cmd->buttons2,cmd->inventory,cmd->lookfly,cmd->arti, player_state, killcount, secretcount, itemcount, mo->health, mo->x, mo->y, mo->z, gamestate, leveltics, gamemap, gameskill, gameepisode);
                 }
             }
         }
