@@ -11,7 +11,7 @@
 
 // TODO: Find a better way to interface with JS
 
-EM_ASYNC_JS(void, hydra_send, (ticcmd_t *cmd, playerstate_t player_state, int kill_count, int secret_count, int item_count, int health, int x, int y, int z, gamestate_t gamestate, int leveltics), {
+EM_ASYNC_JS(void, hydra_send, (ticcmd_t *cmd, playerstate_t player_state, int kill_count, int secret_count, int item_count, int health, int x, int y, int z, gamestate_t gamestate, int leveltics, int gamemap, int gameskill, int gameepisode), {
     await hydraSend({
     forwardMove: HEAP8[cmd],
     sideMove: HEAP8[cmd+1],
@@ -38,7 +38,12 @@ EM_ASYNC_JS(void, hydra_send, (ticcmd_t *cmd, playerstate_t player_state, int ki
     }
   },
   gamestate,
-  leveltics);
+  leveltics,
+  {
+  map: gamemap,
+  skill: gameskill,
+  episode: gameepisode,
+  });
 });
 
 // TODO: calling c from javascript proved itself as hard because the
