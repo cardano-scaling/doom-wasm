@@ -11,8 +11,33 @@
 #include "doomtype.h"
 
 // TODO: Find a better way to interface with JS
-//                 hydra_send(cmd->forwardmove, cmd->sidemove, cmd->angleturn, cmd->chatchar, cmd->buttons, cmd->consistancy, cmd->buttons2,cmd->inventory,cmd->lookfly,cmd->arti, player_state, killcount, secretcount, itemcount, mo->health, mo->x, mo->y, mo->z, gamestate, leveltics);
-EM_ASYNC_JS(void, hydra_send, (int forwardmove, int sidemove, int angleturn, byte chatchar, byte buttons, byte consistency, byte buttons2, int inventory, byte lookfly, byte artyi, playerstate_t player_state, int kill_count, int secret_count, int item_count, int health, int x, int y, int z, gamestate_t gamestate, int leveltics, int gamemap, int gameskill, int gameepisode), {
+EM_ASYNC_JS(void, hydra_send, (
+        int forwardmove,
+        int sidemove,
+        int angleturn,
+        byte chatchar,
+        byte buttons,
+        byte consistency,
+        byte buttons2,
+        int inventory,
+        byte lookfly,
+        byte artyi,
+        playerstate_t player_state,
+        int kill_count,
+        int secret_count,
+        int item_count,
+        int cheats,
+        int health,
+        int x,
+        int y,
+        int z,
+        gamestate_t gamestate,
+        int leveltics,
+        int gamemap,
+        int gameskill,
+        int gameepisode,
+        int demoplayback
+    ), {
     await hydraSend({
     forwardMove: forwardmove,
     sideMove: sidemove,
@@ -44,7 +69,8 @@ EM_ASYNC_JS(void, hydra_send, (int forwardmove, int sidemove, int angleturn, byt
     killCount: kill_count,
     secretCount: secret_count,
     itemCount: item_count,
-    }
+    },
+    cheats: cheats !== 0,
   },
   gamestate,
   leveltics,
@@ -52,6 +78,7 @@ EM_ASYNC_JS(void, hydra_send, (int forwardmove, int sidemove, int angleturn, byt
   map: gamemap,
   skill: gameskill,
   episode: gameepisode,
+  demoplayback: demoplayback === 1,
   });
 });
 

@@ -919,8 +919,34 @@ void G_Ticker(void)
                 leveltics = leveltime;
 
                 mo = players[i].mo;
+
                 if (mo) {
-                hydra_send(cmd->forwardmove, cmd->sidemove, cmd->angleturn, cmd->chatchar, cmd->buttons, cmd->consistancy, cmd->buttons2,cmd->inventory,cmd->lookfly,cmd->arti, player_state, killcount, secretcount, itemcount, mo->health, mo->x, mo->y, mo->z, gamestate, leveltics, gamemap, gameskill, gameepisode);
+                hydra_send(
+                    cmd->forwardmove,
+                    cmd->sidemove,
+                    cmd->angleturn,
+                    cmd->chatchar,
+                    cmd->buttons,
+                    cmd->consistancy,
+                    cmd->buttons2,
+                    cmd->inventory,
+                    cmd->lookfly,
+                    cmd->arti,
+                    player_state,
+                    killcount,
+                    secretcount,
+                    itemcount,
+                    players[i].cheats,
+                    mo->health,
+                    mo->x,
+                    mo->y,
+                    mo->z,
+                    gamestate,
+                    leveltics,
+                    gamemap,
+                    gameskill,
+                    gameepisode,
+                    demoplayback);
                 }
             }
         }
