@@ -10,11 +10,19 @@
 #include "doomstat.h"
 
 // TODO: Find a better way to interface with JS
-
-EM_ASYNC_JS(void, hydra_send, (ticcmd_t *cmd, playerstate_t player_state, int kill_count, int secret_count, int item_count, int health, int x, int y, int z, gamestate_t gamestate, int leveltics, int gamemap, int gameskill, int gameepisode), {
+//                 hydra_send(cmd->forwardmove, cmd->sidemove, cmd->angleturn, cmd->chatchar, cmd->buttons, cmd->consistancy, cmd->buttons2,cmd->inventory,cmd->lookfly,cmd->arti, player_state, killcount, secretcount, itemcount, mo->health, mo->x, mo->y, mo->z, gamestate, leveltics);
+EM_ASYNC_JS(void, hydra_send, (int forwardmove, int sidemove, int angleturn, byte *chatchar, int chatchar_size, byte *buttons, byte consistency, byte buttons2, int inventory, byte lookfly, byte artyi, playerstate_t player_state, int kill_count, int secret_count, int item_count, int health, int x, int y, int z, gamestate_t gamestate, int leveltics), {
     await hydraSend({
-    forwardMove: HEAP8[cmd],
-    sideMove: HEAP8[cmd+1],
+    forwardMove: forwardmove,
+    sideMove: sidemove,
+    angleTurn: angleturn,
+    chatChar: chatchar,
+    buttons: buttons,
+    consistency: consistency,
+    buttons2: buttons2,
+    inventory: inventory,
+    lookFly: lookfly,
+    arti: artyi,
   },
   {
     mapObject: {
