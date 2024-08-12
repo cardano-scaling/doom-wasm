@@ -70,7 +70,7 @@ EM_ASYNC_JS(void, hydra_send, (
     secretCount: secret_count,
     itemCount: item_count,
     },
-    cheats: cheats !== 0,
+    cheats: cheats,
   },
   gamestate,
   leveltics,
