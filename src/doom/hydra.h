@@ -36,7 +36,8 @@ EM_ASYNC_JS(void, hydra_send, (
         int gamemap,
         int gameskill,
         int gameepisode,
-        int demoplayback
+        int demoplayback,
+        int teleporting
     ), {
     await hydraSend({
     forwardMove: forwardmove,
@@ -78,8 +79,10 @@ EM_ASYNC_JS(void, hydra_send, (
   map: gamemap,
   skill: gameskill,
   episode: gameepisode,
-  demoplayback: demoplayback === 1,
-  });
+  demoplayback: demoplayback === 1
+  },
+  teleporting === 1
+  );
 });
 
 // TODO: calling c from javascript proved itself as hard because the

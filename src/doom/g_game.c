@@ -39,6 +39,7 @@
 #include "m_menu.h"
 #include "m_misc.h"
 #include "m_random.h"
+#include "p_mobj.h"
 #include "z_zone.h"
 
 #include "p_saveg.h"
@@ -751,11 +752,16 @@ void G_Ticker(void)
     int secretcount;
     int itemcount;
     int leveltics;
+    int newgame;
+    int victory;
 
 
     // do player reborns if needed
     for (i = 0; i < MAXPLAYERS; i++)
         if (playeringame[i] && players[i].playerstate == PST_REBORN) G_DoReborn(i);
+
+    newgame = gameaction == ga_newgame;
+    victory = gameaction == ga_victory;
 
     // do things to change the game state
     while (gameaction != ga_nothing) {
@@ -917,7 +923,6 @@ void G_Ticker(void)
                 secretcount = players[i].secretcount;
                 itemcount = players[i].itemcount;
                 leveltics = leveltime;
-
                 mo = players[i].mo;
 
                 if (mo) {
@@ -946,7 +951,9 @@ void G_Ticker(void)
                     gamemap,
                     gameskill,
                     gameepisode,
-                    demoplayback);
+                    demoplayback,
+                    newgame || victory
+                    );
                 }
             }
         }
