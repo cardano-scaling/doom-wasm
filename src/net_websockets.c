@@ -199,12 +199,14 @@ static boolean NET_Websockets_InitServer(void)
     return true;
 }
 
+static uint32_t packets_sent = 0;
+
 static void NET_Websockets_SendPacket(net_addr_t *addr, net_packet_t *packet)
 {
     if (InitWebSockets() == false) return;
-    char *wspacket = malloc(packet->len + 8);
 
     if (addr->handle) {
+        char *wspacket = malloc(packet->len + 8);
         to_ip = (*(uint32_t *)(addr->handle));
         memcpy(&wspacket[0], &to_ip, 4);       // to
         memcpy(&wspacket[4], &instanceUID, 4); // from
@@ -213,6 +215,10 @@ static void NET_Websockets_SendPacket(net_addr_t *addr, net_packet_t *packet)
         if (r < 0) {
             printf("doom: 6, failed to send ws packet, reconnecting");
             inittedWebSockets = false;
+        }
+        packets_sent++;
+        if (packets_sent % 1000 == 0) {
+            printf("doom: 7, packets sent %d\n", packets_sent);
         }
         free(wspacket);
     }

@@ -881,6 +881,7 @@ static void NET_CL_ParsePacket(net_packet_t *packet)
             break;
 
         default:
+            printf("client: unknown packet type %d\n", packet_type);
             break;
         }
     }

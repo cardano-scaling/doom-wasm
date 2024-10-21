@@ -36,7 +36,7 @@
 #include "net_loop.h"
 #include "net_packet.h"
 #include "net_query.h"
-#include "net_websockets.h"
+#include "net_hydra.h"
 #include "net_server.h"
 #include "net_structrw.h"
 
@@ -1281,7 +1281,6 @@ static void NET_SV_Packet(net_packet_t *packet, net_addr_t *addr)
 
     if (!NET_ReadInt16(packet, &packet_type)) {
         // no packet type
-
         return;
     }
 
@@ -1321,6 +1320,7 @@ static void NET_SV_Packet(net_packet_t *packet, net_addr_t *addr)
             break;
         default:
             // unknown packet type
+            printf("server: unknown packet type %d\n", packet_type);
 
             break;
         }
@@ -1632,7 +1632,7 @@ void NET_SV_Run(void)
     // printf("net_server.c :: while(NET_RecvPacket())\n");
 
     while (NET_RecvPacket(server_context, &addr, &packet)) {
-        // printf("net_server.c :: NET_SV_Packet() %d\n", (IPaddress *)nip->host);
+        // printf("net_server.c :: NET_SV_Packet() %s\n", NET_AddrToString(addr));
         NET_SV_Packet(packet, addr);
         // printf("net_server.c :: NET_FreePacket()\n");
         NET_FreePacket(packet);

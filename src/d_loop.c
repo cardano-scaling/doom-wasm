@@ -40,10 +40,13 @@
 #include "net_loop.h"
 #include "net_query.h"
 #include "net_server.h"
-#include "net_websockets.h"
+#include "net_hydra.h"
 #include "z_zone.h"
 
 uint32_t instanceUID;
+EM_JS(void, hydra_set_ip, (uint32_t ip), {
+    hydraSetIP(ip);
+})
 
 // The complete set of data for a particular tic.
 
@@ -419,9 +422,10 @@ boolean D_InitNetGame(net_connect_data_t *connect_data)
     if (M_CheckParm("-server") > 0 || M_CheckParm("-privateserver") > 0) {
         // Server has instanceUID 1
         instanceUID = 1;
+        hydra_set_ip(instanceUID);
         NET_SV_Init();
         NET_SV_AddModule(&net_loop_server_module);
-        NET_SV_AddModule(&net_websockets_module);
+        NET_SV_AddModule(&net_hydra_module);
         net_loop_client_module.InitClient();
         addr = net_loop_client_module.ResolveAddress(NULL);
         NET_ReferenceAddress(addr);
@@ -435,15 +439,16 @@ boolean D_InitNetGame(net_connect_data_t *connect_data)
         // address.
         //
 
-        // Generate UID for this instance - it will be used as the websocketsID
+        // Generate UID for this instance - it will be used as the hydra ID
         srand((unsigned int)time(NULL));
         instanceUID = rand() % 0xfffe;
+        hydra_set_ip(instanceUID);
 
         i = M_CheckParmWithArgs("-connect", 1);
 
         if (i > 0) {
-            net_websockets_module.InitClient();
-            addr = net_websockets_module.ResolveAddress("1"); // server address is 1!
+            net_hydra_module.InitClient();
+            addr = net_hydra_module.ResolveAddress("1"); // server address is 1!
             NET_ReferenceAddress(addr);
         }
     }
