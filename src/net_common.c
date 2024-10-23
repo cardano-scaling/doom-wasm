@@ -436,33 +436,39 @@ void NET_OpenLog(void)
 
 void NET_Log(const char *fmt, ...)
 {
+    if (net_debug == NULL) {
+        return;
+    }
     va_list args;
 
-    printf("NET: %8d: ", I_GetTimeMS());
+    fprintf(net_debug, "NET: %8d: ", I_GetTimeMS());
     va_start(args, fmt);
-    vprintf(fmt, args);
+    vfprintf(net_debug, fmt, args);
     va_end(args);
-    printf("\n");
+    fprintf(net_debug, "\n");
 }
 
 void NET_LogPacket(net_packet_t *packet)
 {
+    if (net_debug == NULL) {
+        return;
+    }
     int i, bytes;
 
     bytes = packet->len - packet->pos;
     if (bytes == 0) {
         return;
     }
-    printf("NET: \t%02x", packet->data[packet->pos]);
+    fprintf(net_debug, "NET: \t%02x", packet->data[packet->pos]);
     for (i = 1; i < bytes; ++i) {
         if ((i % 16) == 0) {
-            printf("\nNET: \t");
+            fprintf(net_debug, "\nNET: \t");
         }
         else {
-            printf(" ");
+            fprintf(net_debug, " ");
         }
-        printf("%02x", packet->data[packet->pos + i]);
+        fprintf(net_debug, "%02x", packet->data[packet->pos + i]);
     }
-    printf("\n");
+    fprintf(net_debug, "\n");
 }
 

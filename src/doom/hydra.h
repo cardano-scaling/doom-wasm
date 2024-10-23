@@ -14,7 +14,7 @@
 EM_ASYNC_JS(void, hydra_send_packet, (uint32_t to, uint32_t from, char *packet, size_t len), {
     let data = HEAPU8.subarray(packet, packet + len);
 
-    await hydraSendPacket(to, from, data);
+    await window.HydraMultiplayer.SendPacket(to, from, data);
 })
 
 #endif

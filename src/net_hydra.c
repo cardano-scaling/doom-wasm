@@ -70,7 +70,7 @@ static hydra_packet_t *HydraQueuePop(packet_queue_t *queue) {
 }
 
 EMSCRIPTEN_KEEPALIVE
-void InboundPacket(uint32_t from, char *data, size_t len) {
+void ReceivePacket(uint32_t from, char *data, size_t len) {
     net_packet_t *packet = NET_NewPacket(len);
     memcpy(packet->data, data, len);
     packet->len = len;

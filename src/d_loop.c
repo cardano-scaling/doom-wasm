@@ -45,7 +45,7 @@
 
 uint32_t instanceUID;
 EM_JS(void, hydra_set_ip, (uint32_t ip), {
-    hydraSetIP(ip);
+    window.HydraMultiplayer.setIP(ip);
 })
 
 // The complete set of data for a particular tic.
