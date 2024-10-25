@@ -85,5 +85,8 @@ boolean D_NonVanillaPlayback(boolean conditional, int lumpnum,
                              const char *feature);
 
 void D_GameLoop();
+
+void hydra_set_ip(uint32_t ip);
+
 #endif
 

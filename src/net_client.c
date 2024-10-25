@@ -901,7 +901,6 @@ void NET_CL_Run(void)
 
     while (NET_RecvPacket(client_context, &addr, &packet)) {
         // only accept packets from the server
-
         if (addr == server_addr) {
             NET_CL_ParsePacket(packet);
         }
