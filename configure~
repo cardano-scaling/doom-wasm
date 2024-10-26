@@ -5299,7 +5299,7 @@ fi
 
 # TODO: We currently link everything against libraries that don't need it.
 # Use the specific library CFLAGS/LIBS variables instead of setting them here.
-EMFLAGS="-gsource-map -s INVOKE_RUN=1 -s USE_SDL=2 -s USE_SDL_MIXER=2 -s LEGACY_GL_EMULATION=0 -s USE_SDL_NET=2 -s ASSERTIONS=0 -s WASM=1 -s ALLOW_MEMORY_GROWTH=0 -s FORCE_FILESYSTEM=1 -s EXPORTED_RUNTIME_METHODS=['FS','ccall'] -s EXPORTED_FUNCTIONS=['_main','_malloc','_free'] -s SAFE_HEAP=1 -s EXIT_RUNTIME=1 -s STACK_OVERFLOW_CHECK=1 -s PROXY_POSIX_SOCKETS=0 -s USE_PTHREADS=0 -s PROXY_TO_PTHREAD=0 -s TOTAL_MEMORY=64MB -s ERROR_ON_UNDEFINED_SYMBOLS=0 -s ASYNCIFY -O3 --source-map-base /"
+EMFLAGS="-gsource-map -s HEADLESS -s INVOKE_RUN=0 -s USE_SDL=2 -s USE_SDL_MIXER=2 -s LEGACY_GL_EMULATION=0 -s USE_SDL_NET=2 -s ASSERTIONS=0 -s WASM=1 -s ALLOW_MEMORY_GROWTH=0 -s FORCE_FILESYSTEM=1 -s MODULARIZE -s EXPORT_NAME=createModule -s EXPORTED_RUNTIME_METHODS=['FS','ccall','callMain'] -s EXPORTED_FUNCTIONS=['_main','_malloc','_free'] -s SAFE_HEAP=1 -s EXIT_RUNTIME=1 -s STACK_OVERFLOW_CHECK=1 -s PROXY_POSIX_SOCKETS=0 -s USE_PTHREADS=0 -s PROXY_TO_PTHREAD=0 -s TOTAL_MEMORY=64MB -s ERROR_ON_UNDEFINED_SYMBOLS=0 -s ASYNCIFY -O3 --source-map-base /"
 
 CFLAGS="$CFLAGS $SDL_CFLAGS ${SAMPLERATE_CFLAGS:-} ${PNG_CFLAGS:-} $EMFLAGS"
 LDFLAGS="$LDFLAGS $SDL_LIBS ${SAMPLERATE_LIBS:-} ${PNG_LIBS:-} $EMFLAGS -lwebsocket.js"
@@ -6862,7 +6862,7 @@ EXEEXT=".html"
 
 
 
-ac_config_files="$ac_config_files Makefile opl/Makefile opl/examples/Makefile pcsound/Makefile data/Makefile src/Makefile src/doom/Makefile src/resource.rc src/setup-res.rc textscreen/Makefile textscreen/examples/Makefile textscreen/fonts/Makefile"
+ac_config_files="$ac_config_files Makefile opl/Makefile pcsound/Makefile data/Makefile src/Makefile src/doom/Makefile src/resource.rc src/setup-res.rc textscreen/Makefile textscreen/fonts/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -7607,7 +7607,6 @@ do
     "config.h") CONFIG_HEADERS="$CONFIG_HEADERS config.h:config.hin" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "opl/Makefile") CONFIG_FILES="$CONFIG_FILES opl/Makefile" ;;
-    "opl/examples/Makefile") CONFIG_FILES="$CONFIG_FILES opl/examples/Makefile" ;;
     "pcsound/Makefile") CONFIG_FILES="$CONFIG_FILES pcsound/Makefile" ;;
     "data/Makefile") CONFIG_FILES="$CONFIG_FILES data/Makefile" ;;
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
@@ -7615,7 +7614,6 @@ do
     "src/resource.rc") CONFIG_FILES="$CONFIG_FILES src/resource.rc" ;;
     "src/setup-res.rc") CONFIG_FILES="$CONFIG_FILES src/setup-res.rc" ;;
     "textscreen/Makefile") CONFIG_FILES="$CONFIG_FILES textscreen/Makefile" ;;
-    "textscreen/examples/Makefile") CONFIG_FILES="$CONFIG_FILES textscreen/examples/Makefile" ;;
     "textscreen/fonts/Makefile") CONFIG_FILES="$CONFIG_FILES textscreen/fonts/Makefile" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
