@@ -9,15 +9,11 @@ rm -fr Makefile Makefile.in .deps *.o *.a
 cd fonts
 rm -fr Makefile Makefile.in
 cd ..
-cd examples
-rm -fr Makefile Makefile.in *.o *.a *.wasm *.wasm.map *.worker.js *.html *.html.symbols *.js .deps
-cd ../..
+cd ..
 
 cd opl
 rm -fr Makefile Makefile.in .deps *.o *.a
-cd examples
-rm -fr Makefile Makefile.in *.o *.a *.wasm *.wasm.map *.worker.js *.html *.html.symbols *.js .deps
-cd ../..
+cd ..
 
 cd data
 rm -fr Makefile Makefile.in
