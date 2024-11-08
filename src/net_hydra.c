@@ -115,9 +115,6 @@ static void NET_Hydra_SendPacket(net_addr_t *addr, net_packet_t *packet)
 
     hydra_send_packet(to_ip, instanceUID, hydra_packet, packet->len);
     packets_sent++;
-    if (packets_sent % 1000 == 0) {
-        printf("doom: 7, packets sent %d\n", packets_sent);
-    }
 }
 
 static net_addr_t *FindAddressByIp(uint32_t ip)

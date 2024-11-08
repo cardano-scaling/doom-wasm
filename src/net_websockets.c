@@ -217,9 +217,6 @@ static void NET_Websockets_SendPacket(net_addr_t *addr, net_packet_t *packet)
             inittedWebSockets = false;
         }
         packets_sent++;
-        if (packets_sent % 1000 == 0) {
-            printf("doom: 7, packets sent %d\n", packets_sent);
-        }
         free(wspacket);
     }
 }

@@ -569,6 +569,7 @@ void G_DoLoadLevel(void)
     for (i = 0; i < MAXPLAYERS; i++) {
         turbodetected[i] = false;
         if (playeringame[i] && players[i].playerstate == PST_DEAD) players[i].playerstate = PST_REBORN;
+        // NOTE(pi): Set a new player to 0 frags for each other player
         memset(players[i].frags, 0, sizeof(players[i].frags));
     }
 
@@ -943,6 +944,7 @@ void G_PlayerReborn(int player)
     int itemcount;
     int secretcount;
 
+    // NOTE(pi): Preserve kill counts across respawn
     memcpy(frags, players[player].frags, sizeof(frags));
     killcount = players[player].killcount;
     itemcount = players[player].itemcount;
