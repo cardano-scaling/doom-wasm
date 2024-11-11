@@ -45,10 +45,10 @@
 
 uint32_t instanceUID;
 EM_JS(void, hydra_set_ip, (uint32_t ip), {
-    let g = typeof window !== 'undefined' ? window : global;
+    let g = typeof window !== "undefined" ? window : global;
     let hydra = !!g ? g.HydraMultiplayer : null;
     if (!!hydra) {
-        window.HydraMultiplayer.setIP(ip);
+        hydra.setIP(ip);
     }
 })
 
