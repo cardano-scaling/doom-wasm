@@ -635,7 +635,7 @@ static void NET_SV_ParseSYN(net_packet_t *packet, net_client_t *client, net_addr
     // clients affects turning resolution.
 
     // Adopt the game mode and mission of the first connecting client:
-    if (num_players == 0 && !data.drone) {
+    if (num_players == 0) {
         sv_gamemode = data.gamemode;
         sv_gamemission = data.gamemission;
         NET_Log("server: new game, mode=%d, mission=%d", sv_gamemode, sv_gamemission);

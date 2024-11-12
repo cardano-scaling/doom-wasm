@@ -1135,6 +1135,11 @@ void D_DoomMain(void)
         // Never returns
     }
 
+    if (M_CheckParm("-nodraw") > 0) {
+        printf("Turning off rendering\n");
+        nodrawers = true;
+    }
+
     //!
     // @category net
     //

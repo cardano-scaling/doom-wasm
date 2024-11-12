@@ -330,3 +330,22 @@ void NET_WaitForLaunch(void)
 
     TXT_Shutdown();
 }
+
+void NET_WaitForLaunchHeadless(void) {
+
+    ParseCommandLineArgs();
+    had_warning = false;
+
+    while (net_waiting_for_launch) {
+        CheckAutoLaunch();
+        CheckSHA1Sums();
+
+        NET_CL_Run();
+        NET_SV_Run();
+
+        if (!net_client_connected) {
+            // I_Error("Lost connection to server");
+        }
+        emscripten_sleep(100);
+    }
+}
