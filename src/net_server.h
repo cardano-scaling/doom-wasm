@@ -40,5 +40,10 @@ int NET_SV_NumPlayers(void);
 
 void NET_SV_RegisterWithMaster(void);
 
+void hydra_game_started();
+void hydra_game_ended();
+void hydra_player_connected();
+void hydra_player_disconnected();
+
 #endif /* #ifndef NET_SERVER_H */
 

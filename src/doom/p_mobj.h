@@ -214,7 +214,7 @@ typedef struct mobj_s
 
     //More drawing info: to determine current sprite.
     angle_t		angle;	// orientation
-    spritenum_t		sprite;	// used to find patch_t and flip value
+    spritenum_t	sprite;	// used to find patch_t and flip value
     int			frame;	// might be ORed with FF_FULLBRIGHT
 
     // Interaction info, by BLOCKMAP.
@@ -244,7 +244,7 @@ typedef struct mobj_s
     mobjinfo_t*		info;	// &mobjinfo[mobj->type]
     
     int			tics;	// state tic counter
-    state_t*		state;
+    state_t*	state;
     int			flags;
     int			health;
 
@@ -275,8 +275,8 @@ typedef struct mobj_s
     mapthing_t		spawnpoint;	
 
     // Thing being chased/attacked for tracers.
-    struct mobj_s*	tracer;	
-    
+    struct mobj_s*	tracer;
+
 } mobj_t;
 
 

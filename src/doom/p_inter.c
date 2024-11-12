@@ -669,12 +669,18 @@ P_TouchSpecialThing
 	S_StartSound (NULL, sound);
 }
 
-EM_JS(void, hydra_record_kill, (int killer, int killed), {
-	console.log("KILL: " + killer + " -> " + killed);
+EM_JS(void, hydra_record_kill, (int killer, int victim), {
+	const g = typeof window !== 'undefined' ? window : global;
+	if (!!g && !!g.kill) {
+		g.kill(killer, victim);
+	}
 })
 
 EM_JS(void, hydra_record_suicide, (int killer), {
-	console.log("SUICIDE: " + killer);
+	const g = typeof window !== 'undefined' ? window : global;
+	if (!!g && !!g.suicide) {
+		g.suicide(killer);
+	}
 })
 
 //
