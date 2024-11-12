@@ -436,16 +436,13 @@ void NET_OpenLog(void)
 
 void NET_Log(const char *fmt, ...)
 {
-    if (net_debug == NULL) {
-        return;
-    }
     va_list args;
 
-    fprintf(net_debug, "NET: %8d: ", I_GetTimeMS());
+    printf("NET: %8d: ", I_GetTimeMS());
     va_start(args, fmt);
-    vfprintf(net_debug, fmt, args);
+    vprintf(fmt, args);
     va_end(args);
-    fprintf(net_debug, "\n");
+    printf("\n");
 }
 
 void NET_LogPacket(net_packet_t *packet)

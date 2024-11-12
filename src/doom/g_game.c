@@ -814,6 +814,7 @@ void G_Ticker(void)
             // for each player so messages are not displayed at the
             // same time.
 
+            // NOTE(pi): here's where we'll want to flag cheats
             if (cmd->forwardmove > TURBOTHRESHOLD) {
                 turbodetected[i] = true;
             }

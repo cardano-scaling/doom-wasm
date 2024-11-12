@@ -64,6 +64,7 @@
 #include "i_video.h"
 
 #include "g_game.h"
+#include "g_bot.h"
 
 #include "am_map.h"
 #include "hu_stuff.h"
@@ -1531,6 +1532,10 @@ void D_DoomMain(void)
     startepisode = 1;
     startmap = 1;
     autostart = false;
+
+    if (M_CheckParm("-ai")) {
+        BOT_InitBot();
+    }
 
     //!
     // @category game

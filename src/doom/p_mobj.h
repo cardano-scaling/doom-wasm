@@ -277,6 +277,11 @@ typedef struct mobj_s
     // Thing being chased/attacked for tracers.
     struct mobj_s*	tracer;
 
+    // Pathfinding
+    int			current_node;
+    int			previous_node;
+    int			potential_node;
+    
 } mobj_t;
 
 

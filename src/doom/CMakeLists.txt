@@ -24,6 +24,8 @@ add_library(doom STATIC
             f_finale.c      f_finale.h
             f_wipe.c        f_wipe.h
             g_game.c        g_game.h
+            g_bot.c         g_bot.h
+            g_navigation.c  g_navigation.h
             hu_lib.c        hu_lib.h
             hu_stuff.c      hu_stuff.h
                             hydra.h
