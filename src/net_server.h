@@ -34,9 +34,16 @@ void NET_SV_Shutdown(void);
 
 void NET_SV_AddModule(net_module_t *module);
 
+int NET_SV_NumPlayers(void);
+
 // Register server with master server.
 
 void NET_SV_RegisterWithMaster(void);
+
+void hydra_game_started();
+void hydra_game_ended();
+void hydra_player_connected();
+void hydra_player_disconnected();
 
 #endif /* #ifndef NET_SERVER_H */
 

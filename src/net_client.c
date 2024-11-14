@@ -881,6 +881,7 @@ static void NET_CL_ParsePacket(net_packet_t *packet)
             break;
 
         default:
+            printf("client: unknown packet type %d\n", packet_type);
             break;
         }
     }
@@ -900,7 +901,6 @@ void NET_CL_Run(void)
 
     while (NET_RecvPacket(client_context, &addr, &packet)) {
         // only accept packets from the server
-
         if (addr == server_addr) {
             NET_CL_ParsePacket(packet);
         }

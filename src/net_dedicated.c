@@ -27,7 +27,10 @@
 
 #include "net_common.h"
 #include "net_server.h"
-#include "net_websockets.h"
+#include "net_hydra.h"
+#include "d_loop.h"
+
+extern uint32_t instanceUID;
 
 //
 // People can become confused about how dedicated servers work.  Game
@@ -61,9 +64,11 @@ void NET_DedicatedServer(void)
 {
     CheckForClientOptions();
 
+    instanceUID = 1;
+    hydra_set_ip(1);
     NET_OpenLog();
     NET_SV_Init();
-    NET_SV_AddModule(&net_websockets_module);
+    NET_SV_AddModule(&net_hydra_module);
 
     while (true) {
         NET_SV_Run();

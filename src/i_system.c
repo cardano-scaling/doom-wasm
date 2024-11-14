@@ -304,7 +304,9 @@ void I_Error(const char *error, ...)
 
     // abort();
 
-    SDL_Quit();
+    if (!M_ParmExists("-nodraw")) {
+        SDL_Quit();
+    }
 
     exit(-1);
 }

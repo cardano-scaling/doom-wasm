@@ -24,6 +24,8 @@
 #include "dstrings.h"
 #include "sounds.h"
 
+#include <emscripten.h>
+
 #include "deh_main.h"
 #include "deh_misc.h"
 #include "doomstat.h"
@@ -667,6 +669,19 @@ P_TouchSpecialThing
 	S_StartSound (NULL, sound);
 }
 
+EM_JS(void, hydra_record_kill, (int killer, int victim), {
+	const g = typeof window !== 'undefined' ? window : global;
+	if (!!g && !!g.kill) {
+		g.kill(killer, victim);
+	}
+})
+
+EM_JS(void, hydra_record_suicide, (int killer), {
+	const g = typeof window !== 'undefined' ? window : global;
+	if (!!g && !!g.suicide) {
+		g.suicide(killer);
+	}
+})
 
 //
 // KillMobj
@@ -687,14 +702,29 @@ P_KillMobj
     target->flags |= MF_CORPSE|MF_DROPOFF;
     target->height >>= 2;
 
+	int source_player_idx = 0;
+	int target_player_idx = 0;
+	if (source && source->player) {
+		source_player_idx = source->player - players;
+	}
+	if (target && target->player) {
+		target_player_idx = target->player - players;
+	}
+
     if (source && source->player)
     {
+
 	// count for intermission
 	if (target->flags & MF_COUNTKILL)
 	    source->player->killcount++;	
 
+	// NOTE(pi): This is where we actually record the kill
+	// NOTE(pi): the target->player-player construct gets the player index; target->player is a pointer into an array,
+	//           players is a pointer to the start of the array
+	//           so subtracting them gives the player index
 	if (target->player)
-	    source->player->frags[target->player-players]++;
+	    source->player->frags[target_player_idx]++;
+		hydra_record_kill(source_player_idx, target_player_idx);
     }
     else if (!netgame && (target->flags & MF_COUNTKILL) )
     {
@@ -706,8 +736,11 @@ P_KillMobj
     if (target->player)
     {
 	// count environment kills against you
-	if (!source)	
-	    target->player->frags[target->player-players]++;
+	// NOTE(pi): this is a self kill; so any suicides (acid, or rocket blasts) by the 3rd player  will record as a frag of the 3rd player
+	if (!source) {
+	    target->player->frags[target_player_idx]++;
+		hydra_record_suicide(target_player_idx);
+	}
 			
 	target->flags &= ~MF_SOLID;
 	target->player->playerstate = PST_DEAD;

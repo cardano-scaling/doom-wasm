@@ -11,20 +11,16 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
-// Graphical stuff related to the networking code:
-//
-//  * The client waiting screen when we are waiting for the server to
-//    start the game.
+// DESCRIPTION:
+//     Networking module which uses SDL_net
 //
 
+#ifndef NET_HYDRA_H
+#define NET_HYDRA_H
 
-#ifndef NET_GUI_H
-#define NET_GUI_H
+#include "net_defs.h"
 
-#include "doomtype.h"
+extern net_module_t net_hydra_module;
 
-extern void NET_WaitForLaunch(void);
-extern void NET_WaitForLaunchHeadless(void);
-
-#endif /* #ifndef NET_GUI_H */
+#endif /* #ifndef NET_HYDRA_H */
 

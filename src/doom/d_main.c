@@ -64,6 +64,7 @@
 #include "i_video.h"
 
 #include "g_game.h"
+#include "g_bot.h"
 
 #include "am_map.h"
 #include "hu_stuff.h"
@@ -1135,6 +1136,11 @@ void D_DoomMain(void)
         // Never returns
     }
 
+    if (M_CheckParm("-nodraw") > 0) {
+        printf("Turning off rendering\n");
+        nodrawers = true;
+    }
+
     //!
     // @category net
     //
@@ -1526,6 +1532,10 @@ void D_DoomMain(void)
     startepisode = 1;
     startmap = 1;
     autostart = false;
+
+    if (M_CheckParm("-ai")) {
+        BOT_InitBot();
+    }
 
     //!
     // @category game

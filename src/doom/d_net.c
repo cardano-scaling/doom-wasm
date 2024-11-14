@@ -23,6 +23,7 @@
 #include "debug.h"
 #include "doomdef.h"
 #include "doomstat.h"
+#include "g_bot.h"
 #include "g_game.h"
 #include "i_system.h"
 #include "i_timer.h"
@@ -89,6 +90,7 @@ static void RunTic(ticcmd_t *cmds, boolean *ingame)
 }
 
 static loop_interface_t doom_loop_interface = {D_ProcessEvents, G_BuildTiccmd, RunTic, M_Ticker};
+static loop_interface_t bot_loop_interface = {D_ProcessEvents, BOT_BuildTiccmd, RunTic, M_Ticker};
 
 // Load game settings from the specified structure and
 // set global variables.
@@ -232,8 +234,12 @@ void D_CheckNetGame(void)
     if (netgame) {
         autostart = true;
     }
-
-    D_RegisterLoopCallbacks(&doom_loop_interface);
+    
+    if (M_CheckParm("-ai")) {
+        D_RegisterLoopCallbacks(&bot_loop_interface);
+    } else {
+        D_RegisterLoopCallbacks(&doom_loop_interface);
+    }
 
     SaveGameSettings(&settings);
     D_StartNetGame(&settings, NULL);

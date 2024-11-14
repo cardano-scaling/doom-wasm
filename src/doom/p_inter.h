@@ -25,6 +25,8 @@
 
 boolean	P_GivePower(player_t*, int);
 
+void hydra_record_kill(int, int);
+void hydra_record_suicide(int);
 
 
 #endif

@@ -30,7 +30,7 @@
 #include "net_packet.h"
 #include "net_query.h"
 #include "net_structrw.h"
-#include "net_websockets.h"
+#include "net_hydra.h"
 
 // DNS address of the Internet master server.
 
@@ -219,6 +219,7 @@ static void NET_Query_GetResponse(net_query_callback_t callback, void *user_data
     net_addr_t *addr;
     net_packet_t *packet;
 
+    printf("NET_Query_GetResponse\n");
     if (NET_RecvPacket(query_context, &addr, &packet)) {
         NET_Query_ParsePacket(addr, packet, callback, user_data);
         NET_ReleaseAddress(addr);
@@ -360,8 +361,8 @@ void NET_Query_Init(void)
 {
     if (query_context == NULL) {
         query_context = NET_NewContext();
-        NET_AddModule(query_context, &net_websockets_module);
-        net_websockets_module.InitClient();
+        NET_AddModule(query_context, &net_hydra_module);
+        net_hydra_module.InitClient();
     }
 
     free(targets);

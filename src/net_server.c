@@ -27,6 +27,7 @@
 #include "i_timer.h"
 #include "m_argv.h"
 #include "m_misc.h"
+#include "emscripten.h"
 
 #include "debug.h"
 #include "net_client.h"
@@ -36,7 +37,7 @@
 #include "net_loop.h"
 #include "net_packet.h"
 #include "net_query.h"
-#include "net_websockets.h"
+#include "net_hydra.h"
 #include "net_server.h"
 #include "net_structrw.h"
 
@@ -237,7 +238,7 @@ static void NET_SV_AssignPlayers(void)
 
 // Returns the number of players currently connected.
 
-static int NET_SV_NumPlayers(void)
+int NET_SV_NumPlayers(void)
 {
     int i;
     int result;
@@ -635,7 +636,7 @@ static void NET_SV_ParseSYN(net_packet_t *packet, net_client_t *client, net_addr
     // clients affects turning resolution.
 
     // Adopt the game mode and mission of the first connecting client:
-    if (num_players == 0 && !data.drone) {
+    if (num_players == 0) {
         sv_gamemode = data.gamemode;
         sv_gamemission = data.gamemission;
         NET_Log("server: new game, mode=%d, mission=%d", sv_gamemode, sv_gamemission);
@@ -687,6 +688,9 @@ static void NET_SV_ParseSYN(net_packet_t *packet, net_client_t *client, net_addr
 
     // Activate, initialize connection
     NET_SV_InitNewClient(client, addr, protocol);
+
+    // NOTE(pi): New player connected
+    hydra_player_connected();
 
     // Save the SHA1 checksums and other details.
     memcpy(client->wad_sha1sum, data.wad_sha1sum, sizeof(sha1_digest_t));
@@ -803,6 +807,8 @@ static void StartGame(void)
     // Change server state
     NET_Log("server: beginning game state");
     server_state = SERVER_IN_GAME;
+    // NOTE(pi): Game Started
+    hydra_game_started();
 
     memset(recvwindow, 0, sizeof(recvwindow));
     recvwindow_start = 0;
@@ -1281,7 +1287,6 @@ static void NET_SV_Packet(net_packet_t *packet, net_addr_t *addr)
 
     if (!NET_ReadInt16(packet, &packet_type)) {
         // no packet type
-
         return;
     }
 
@@ -1321,6 +1326,7 @@ static void NET_SV_Packet(net_packet_t *packet, net_addr_t *addr)
             break;
         default:
             // unknown packet type
+            printf("server: unknown packet type %d\n", packet_type);
 
             break;
         }
@@ -1500,6 +1506,8 @@ static void NET_SV_GameEnded(void)
     int i;
 
     server_state = SERVER_WAITING_LAUNCH;
+    // NOTE(pi): Game Ended
+    hydra_game_ended();
     sv_gamemode = indetermined;
 
     for (i = 0; i < MAXNETNODES; ++i) {
@@ -1521,7 +1529,8 @@ static void NET_SV_RunClient(net_client_t *client)
         client->connection.disconnect_reason == NET_DISCONNECT_TIMEOUT) {
         NET_Log("server: client at %s timed out", NET_AddrToString(client->addr));
         NET_SV_BroadcastMessage("Client '%s' timed out and disconnected", client->name);
-        printf("doom: 12, client '%s' timed out and disconnected", client->name);
+        // NOTE(pi): Player Disconnected
+        hydra_player_disconnected();
     }
 
     // Is this client disconnected?
@@ -1632,7 +1641,7 @@ void NET_SV_Run(void)
     // printf("net_server.c :: while(NET_RecvPacket())\n");
 
     while (NET_RecvPacket(server_context, &addr, &packet)) {
-        // printf("net_server.c :: NET_SV_Packet() %d\n", (IPaddress *)nip->host);
+        // printf("net_server.c :: NET_SV_Packet() %s\n", NET_AddrToString(addr));
         NET_SV_Packet(packet, addr);
         // printf("net_server.c :: NET_FreePacket()\n");
         NET_FreePacket(packet);
@@ -1726,3 +1735,28 @@ void NET_SV_Shutdown(void)
         I_Sleep(1);
     }
 }
+
+EM_JS(void, hydra_game_started, (), {
+    const g = typeof window !== 'undefined' ? window : global;
+	if (!!g && !!g.gameStarted) {
+		g.gameStarted();
+	}
+});
+EM_JS(void, hydra_game_ended, (), {
+    const g = typeof window !== 'undefined' ? window : global;
+	if (!!g && !!g.gameEnded) {
+		g.gameEnded();
+	}
+});
+EM_JS(void, hydra_player_connected, (), {
+    const g = typeof window !== 'undefined' ? window : global;
+	if (!!g && !!g.playerConnected) {
+		g.playerConnected();
+	}
+});
+EM_JS(void, hydra_player_disconnected, (), {
+    const g = typeof window !== 'undefined' ? window : global;
+	if (!!g && !!g.playerDisconnected) {
+		g.playerDisconnected();
+	}
+});

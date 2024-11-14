@@ -70,9 +70,6 @@
 #include "r_data.h"
 #include "r_sky.h"
 
-// Hydra extensions
-#include "hydra.h"
-
 #include "g_game.h"
 
 #define SAVEGAMESIZE 0x2c000
@@ -572,6 +569,7 @@ void G_DoLoadLevel(void)
     for (i = 0; i < MAXPLAYERS; i++) {
         turbodetected[i] = false;
         if (playeringame[i] && players[i].playerstate == PST_DEAD) players[i].playerstate = PST_REBORN;
+        // NOTE(pi): Set a new player to 0 frags for each other player
         memset(players[i].frags, 0, sizeof(players[i].frags));
     }
 
@@ -805,17 +803,6 @@ void G_Ticker(void)
 
             memcpy(cmd, &netcmds[i], sizeof(ticcmd_t));
 
-            // Receive input from Hydra (the network)
-            // XXX: This indicates that we could also integrate hydra via the
-            // netcmds and d_net module system (like the net_websockets module)
-            if(M_CheckParm("-hydra-recv") > 0) {
-                hydra_recv(cmd);
-                // Do not play demo if we are only receiving
-                if(M_CheckParm("-hydra-send") == 0) {
-                    demoplayback = false;
-                }
-            }
-
             if (demoplayback) G_ReadDemoTiccmd(cmd);
             if (demorecording) G_WriteDemoTiccmd(cmd);
 
@@ -827,6 +814,7 @@ void G_Ticker(void)
             // for each player so messages are not displayed at the
             // same time.
 
+            // NOTE(pi): here's where we'll want to flag cheats
             if (cmd->forwardmove > TURBOTHRESHOLD) {
                 turbodetected[i] = true;
             }
@@ -906,51 +894,6 @@ void G_Ticker(void)
         D_PageTicker();
         break;
     }
-
-    // Send updated state to Hydra
-    // FIXME: only send our own state
-    if(M_CheckParm("-hydra-send") > 0) {
-        for (i = 0; i < MAXPLAYERS; i++) {
-            if (playeringame[i]) {
-                player_state = players[i].playerstate;
-                killcount = players[i].killcount;
-                secretcount = players[i].secretcount;
-                itemcount = players[i].itemcount;
-                leveltics = leveltime;
-
-                mo = players[i].mo;
-
-                if (mo) {
-                hydra_send(
-                    cmd->forwardmove,
-                    cmd->sidemove,
-                    cmd->angleturn,
-                    cmd->chatchar,
-                    cmd->buttons,
-                    cmd->consistancy,
-                    cmd->buttons2,
-                    cmd->inventory,
-                    cmd->lookfly,
-                    cmd->arti,
-                    player_state,
-                    killcount,
-                    secretcount,
-                    itemcount,
-                    players[i].cheats,
-                    mo->health,
-                    mo->x,
-                    mo->y,
-                    mo->z,
-                    gamestate,
-                    leveltics,
-                    gamemap,
-                    gameskill,
-                    gameepisode,
-                    demoplayback);
-                }
-            }
-        }
-    }
 }
 
 //
@@ -1002,6 +945,7 @@ void G_PlayerReborn(int player)
     int itemcount;
     int secretcount;
 
+    // NOTE(pi): Preserve kill counts across respawn
     memcpy(frags, players[player].frags, sizeof(frags));
     killcount = players[player].killcount;
     itemcount = players[player].itemcount;

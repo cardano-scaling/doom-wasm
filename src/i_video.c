@@ -1358,6 +1358,10 @@ static void SetVideoMode(void)
 
 void I_InitGraphics(void)
 {
+    if (M_CheckParm("-nodraw") > 0) {
+        return;
+    }
+
     SDL_Event dummy;
     byte *doompal;
     char *env;

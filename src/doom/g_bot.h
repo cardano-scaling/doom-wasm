@@ -1,4 +1,5 @@
 //
+// Copyright(C) 1993-1996 Id Software, Inc.
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -11,20 +12,16 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
-// Graphical stuff related to the networking code:
-//
-//  * The client waiting screen when we are waiting for the server to
-//    start the game.
-//
+// DESCRIPTION:
+//   Bot stuff
+// 
 
 
-#ifndef NET_GUI_H
-#define NET_GUI_H
 
-#include "doomtype.h"
+#ifndef __G_BOT__
+#define __G_BOT__
 
-extern void NET_WaitForLaunch(void);
-extern void NET_WaitForLaunchHeadless(void);
+void BOT_InitBot();
+void BOT_BuildTiccmd(ticcmd_t *cmd, int maketic);
 
-#endif /* #ifndef NET_GUI_H */
-
+#endif
