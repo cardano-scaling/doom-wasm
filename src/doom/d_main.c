@@ -1040,7 +1040,13 @@ static void D_Endoom(void)
     // in screensaver or control test mode. Only show it once the
     // game has actually started.
 
-    if (!show_endoom || !main_loop_started || screensaver_mode || M_CheckParm("-testcontrols") > 0) {
+    if (
+        !show_endoom ||
+        !main_loop_started ||
+        screensaver_mode ||
+        M_CheckParm("-testcontrols") > 0 ||
+        M_CheckParm("-nodraw") > 0
+    ) {
         return;
     }
 

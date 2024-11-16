@@ -473,10 +473,6 @@ boolean D_InitNetGame(net_connect_data_t *connect_data)
             NET_WaitForLaunch();
         }
 
-        if (NET_SV_NumPlayers() == 0) {
-            I_Quit();
-        }
-
         result = true;
     }
 

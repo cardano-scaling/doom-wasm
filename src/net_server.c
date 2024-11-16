@@ -1559,6 +1559,7 @@ static void NET_SV_RunClient(net_client_t *client)
         if (NET_SV_NumPlayers() <= 0) {
             NET_Log("server: no player clients left, game ended");
             NET_SV_GameEnded();
+            I_Quit();
         }
     }
 

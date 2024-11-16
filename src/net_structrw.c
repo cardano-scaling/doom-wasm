@@ -64,8 +64,6 @@ void NET_WriteSettings(net_packet_t *packet, net_gamesettings_t *settings)
 {
     int i;
 
-    printf("ticdup: %d\n", settings->ticdup);
-
     NET_WriteInt8(packet, settings->ticdup);
     NET_WriteInt8(packet, settings->extratics);
     NET_WriteInt8(packet, settings->deathmatch);
@@ -112,8 +110,6 @@ boolean NET_ReadSettings(net_packet_t *packet, net_gamesettings_t *settings)
            && NET_ReadInt8(packet, (unsigned int *) &settings->random)
            && NET_ReadInt8(packet, (unsigned int *) &settings->num_players)
            && NET_ReadSInt8(packet, (signed int *) &settings->consoleplayer);
-
-    printf("read ticdup: %d\n", settings->ticdup);
 
     if (!success)
     {

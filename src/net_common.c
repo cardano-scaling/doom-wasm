@@ -436,6 +436,10 @@ void NET_OpenLog(void)
 
 void NET_Log(const char *fmt, ...)
 {
+    if (net_debug == NULL) {
+        return;
+    }
+
     va_list args;
 
     printf("NET: %8d: ", I_GetTimeMS());
