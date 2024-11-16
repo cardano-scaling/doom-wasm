@@ -64,6 +64,8 @@ void NET_WriteSettings(net_packet_t *packet, net_gamesettings_t *settings)
 {
     int i;
 
+    printf("ticdup: %d\n", settings->ticdup);
+
     NET_WriteInt8(packet, settings->ticdup);
     NET_WriteInt8(packet, settings->extratics);
     NET_WriteInt8(packet, settings->deathmatch);
@@ -110,6 +112,8 @@ boolean NET_ReadSettings(net_packet_t *packet, net_gamesettings_t *settings)
            && NET_ReadInt8(packet, (unsigned int *) &settings->random)
            && NET_ReadInt8(packet, (unsigned int *) &settings->num_players)
            && NET_ReadSInt8(packet, (signed int *) &settings->consoleplayer);
+
+    printf("read ticdup: %d\n", settings->ticdup);
 
     if (!success)
     {
@@ -223,7 +227,7 @@ boolean NET_ReadTiccmdDiff(net_packet_t *packet, net_ticdiff_t *diff,
 
     if (!NET_ReadInt8(packet, &diff->diff))
         return false;
-    
+
     // Read fields
 
     if (diff->diff & NET_TICDIFF_FORWARD)
@@ -378,9 +382,9 @@ void NET_TiccmdPatch(ticcmd_t *src, net_ticdiff_t *diff, ticcmd_t *dest)
     }
 }
 
-// 
+//
 // net_full_ticcmd_t
-// 
+//
 
 boolean NET_ReadFullTiccmd(net_packet_t *packet, net_full_ticcmd_t *cmd, boolean lowres_turn)
 {
@@ -400,12 +404,12 @@ boolean NET_ReadFullTiccmd(net_packet_t *packet, net_full_ticcmd_t *cmd, boolean
     {
         return false;
     }
-          
+
     for (i=0; i<NET_MAXPLAYERS; ++i)
     {
         cmd->playeringame[i] = (bitfield & (1 << i)) != 0;
     }
-        
+
     // Read cmds
 
     for (i=0; i<NET_MAXPLAYERS; ++i)
@@ -435,7 +439,7 @@ void NET_WriteFullTiccmd(net_packet_t *packet, net_full_ticcmd_t *cmd, boolean l
     // in this ticcmd
 
     bitfield = 0;
-    
+
     for (i=0; i<NET_MAXPLAYERS; ++i)
     {
         if (cmd->playeringame[i])
@@ -443,7 +447,7 @@ void NET_WriteFullTiccmd(net_packet_t *packet, net_full_ticcmd_t *cmd, boolean l
             bitfield |= 1 << i;
         }
     }
-    
+
     NET_WriteInt8(packet, bitfield);
 
     // Write player ticcmds
@@ -673,4 +677,3 @@ void NET_WriteProtocolList(net_packet_t *packet)
         NET_WriteProtocol(packet, i);
     }
 }
-
