@@ -27,7 +27,7 @@
 #include "i_timer.h"
 #include "m_argv.h"
 #include "m_misc.h"
-#include "emscripten.h"
+#include <emscripten.h>
 
 #include "debug.h"
 #include "net_client.h"
@@ -1681,6 +1681,9 @@ void NET_SV_Run(void)
         }
         break;
     }
+
+    //Note(Josh): send packet queue
+    hydra_send_packet_queue();
 }
 
 void NET_SV_Shutdown(void)
@@ -1736,6 +1739,14 @@ void NET_SV_Shutdown(void)
         I_Sleep(1);
     }
 }
+
+EM_ASYNC_JS(void, hydra_send_packet_queue, (), {
+    let g = typeof window !== 'undefined' ? window : global;
+    let hydra = !!g ? g.HydraMultiplayer : null;
+    if(!!hydra) {
+        await hydra.sendPacketQueue();
+    }
+});
 
 EM_JS(void, hydra_game_started, (), {
     const g = typeof window !== 'undefined' ? window : global;
