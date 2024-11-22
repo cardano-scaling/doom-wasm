@@ -12,6 +12,7 @@
 // GNU General Public License for more details.
 //
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -36,7 +37,7 @@ struct txt_cliparea_s
 // +-++
 // +-++
 
-static const int borders[4][4] = 
+static const int borders[4][4] =
 {
     {0xda, 0xc4, 0xc2, 0xbf},
     {0xb3, ' ',  0xb3, 0xb3},
@@ -56,14 +57,15 @@ void TXT_DrawDesktopBackground(const char *title)
     unsigned char *p;
 
     screendata = TXT_GetScreenData();
-    
+
     // Fill the screen with gradient characters
 
     p = screendata;
-    
+
+    printf("???\n");
     for (i=0; i<TXT_SCREEN_W * TXT_SCREEN_H; ++i)
     {
-        *p++ = 0xb1;
+        *p++ = ' ';
         *p++ = TXT_COLOR_GREY | (TXT_COLOR_BLUE << 4);
     }
 
@@ -74,7 +76,7 @@ void TXT_DrawDesktopBackground(const char *title)
     for (i=0; i<TXT_SCREEN_W; ++i)
     {
         *p++ = ' ';
-        *p++ = TXT_COLOR_BLACK | (TXT_COLOR_GREY << 4);
+        *p++ = TXT_COLOR_BLACK | (TXT_COLOR_BLACK << 4);
     }
 
     p = screendata + (TXT_SCREEN_H - 1) * TXT_SCREEN_W * 2;
@@ -82,14 +84,14 @@ void TXT_DrawDesktopBackground(const char *title)
     for (i=0; i<TXT_SCREEN_W; ++i)
     {
         *p++ = ' ';
-        *p++ = TXT_COLOR_BLACK | (TXT_COLOR_GREY << 4);
+        *p++ = TXT_COLOR_BLACK | (TXT_COLOR_BLACK << 4);
     }
 
     // Print the title
 
     TXT_GotoXY(0, 0);
-    TXT_FGColor(TXT_COLOR_BLACK);
-    TXT_BGColor(TXT_COLOR_GREY, 0);
+    TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
+    TXT_BGColor(TXT_COLOR_BLACK, 0);
 
     TXT_DrawString(" ");
     TXT_DrawString(title);
@@ -111,7 +113,7 @@ void TXT_DrawShadow(int x, int y, int w, int h)
         {
             if (VALID_X(x1) && VALID_Y(y1))
             {
-                p[1] = TXT_COLOR_DARK_GREY;
+                p[1] = TXT_COLOR_BLACK | (TXT_COLOR_GREEN << 4);
             }
 
             p += 2;
@@ -126,7 +128,7 @@ void TXT_DrawWindowFrame(const char *title, int x, int y, int w, int h)
     int bx, by;
 
     TXT_SaveColors(&colors);
-    TXT_FGColor(TXT_COLOR_BRIGHT_CYAN);
+    TXT_FGColor(TXT_COLOR_RED);
 
     for (y1=y; y1<y+h; ++y1)
     {
@@ -145,7 +147,7 @@ void TXT_DrawWindowFrame(const char *title, int x, int y, int w, int h)
         {
             bx = x1 == x ? 0 :
                  x1 == x + w - 1 ? 3 : 1;
-                 
+
             if (VALID_X(x1) && VALID_Y(y1))
             {
                 TXT_GotoXY(x1, y1);
@@ -159,14 +161,14 @@ void TXT_DrawWindowFrame(const char *title, int x, int y, int w, int h)
     if (title != NULL)
     {
         TXT_GotoXY(x + 1, y + 1);
-        TXT_BGColor(TXT_COLOR_GREY, 0);
-        TXT_FGColor(TXT_COLOR_BLUE);
+        TXT_BGColor(TXT_COLOR_BLUE, 0);
+        TXT_FGColor(TXT_COLOR_BLACK);
 
         for (x1=0; x1<w-2; ++x1)
         {
             TXT_DrawString(" ");
         }
-    
+
         TXT_GotoXY(x + (w - TXT_UTF8_Strlen(title)) / 2, y + 1);
         TXT_DrawString(title);
     }
@@ -472,9 +474,8 @@ void TXT_PopClipArea(void)
         return;
 
     // Unlink the last entry and delete
-   
+
     next_cliparea = cliparea->next;
     free(cliparea);
     cliparea = next_cliparea;
 }
-

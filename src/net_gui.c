@@ -62,16 +62,17 @@ static void OpenWaitDialog(void)
 {
     txt_window_action_t *cancel;
 
-    TXT_SetDesktopTitle(PACKAGE_STRING);
+    TXT_SetDesktopTitle("Hydra Doom 0.0.1");
 
     window = TXT_NewWindow("Waiting for game start...");
 
     TXT_AddWidget(window, TXT_NewLabel("\nPlease wait...\n\n"));
 
-    cancel = TXT_NewWindowAction(KEY_ESCAPE, "Cancel");
-    TXT_SignalConnect(cancel, "pressed", EscapePressed, NULL);
+    // Disable cancellation so the user doesn't accidentally disconnect
+    // cancel = TXT_NewWindowAction(KEY_ESCAPE, "Cancel");
+    // TXT_SignalConnect(cancel, "pressed", EscapePressed, NULL);
+    // TXT_SetWindowAction(window, TXT_HORIZ_LEFT, cancel);
 
-    TXT_SetWindowAction(window, TXT_HORIZ_LEFT, cancel);
     TXT_SetWindowPosition(window, TXT_HORIZ_CENTER, TXT_VERT_BOTTOM, TXT_SCREEN_W / 2, TXT_SCREEN_H - 9);
 
     old_max_players = 0;
@@ -132,7 +133,7 @@ static void UpdateGUI(void)
         txt_color_t color = TXT_COLOR_BRIGHT_WHITE;
 
         if ((signed)i == net_client_wait_data.consoleplayer) {
-            color = TXT_COLOR_YELLOW;
+            color = TXT_COLOR_BLUE;
         }
 
         TXT_SetFGColor(player_labels[i], color);
@@ -303,7 +304,12 @@ void NET_WaitForLaunch(void)
         exit(-1);
     }
 
-    TXT_SetColor(TXT_COLOR_BLUE, 0x04, 0x14, 0x40); // Romero's "funky blue" color
+    TXT_SetColor(TXT_COLOR_RED, 0xeb, 0x33, 0x23); // red border
+    TXT_SetColor(TXT_COLOR_BLACK, 0x27, 0x25, 0x1d); // window frame
+    TXT_SetColor(TXT_COLOR_BLUE, 0xff, 0xfe, 0x55); // yellow
+    TXT_SetColor(TXT_COLOR_GREY, 0x19, 0x19, 0x15); // middle box surface
+    TXT_SetColor(TXT_COLOR_MAGENTA, 0x25, 0x16, 0x12); // bg
+    TXT_SetColor(TXT_COLOR_GREEN, 0x1c, 0x10, 0x0d); // shadow
 
     I_InitWindowIcon();
 

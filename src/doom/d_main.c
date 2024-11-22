@@ -1123,7 +1123,7 @@ void D_DoomMain(void)
 
     // print banner
 
-    I_PrintBanner(PACKAGE_STRING);
+    I_PrintBanner("Hydra Doom 0.0.1");
 
     DEH_printf("Z_Init: Init zone memory allocation daemon. \n");
     Z_Init();
@@ -1722,4 +1722,3 @@ void D_DoomMain(void)
 
     D_DoomLoop(); // never returns
 }
-

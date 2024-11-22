@@ -27,7 +27,7 @@
 #define ENDOOM_W 80
 #define ENDOOM_H 25
 
-// 
+//
 // Displays the text mode ending screen after the game quits
 //
 
@@ -41,7 +41,7 @@ void I_Endoom(byte *endoom_data)
 
     TXT_Init();
 
-    TXT_SetWindowTitle(PACKAGE_STRING);
+    TXT_SetWindowTitle("Hydra Doom 0.0.1");
     // SDL2-TODO I_InitWindowTitle();
     // SDL2-TODO I_InitWindowIcon();
 
@@ -80,4 +80,3 @@ void I_Endoom(byte *endoom_data)
 
     TXT_Shutdown();
 }
-
