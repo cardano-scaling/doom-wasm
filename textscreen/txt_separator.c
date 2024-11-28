@@ -59,7 +59,7 @@ static void TXT_SeparatorDrawer(TXT_UNCAST_ARG(separator))
     {
         TXT_GotoXY(x, y);
 
-        TXT_FGColor(TXT_COLOR_BRIGHT_GREEN);
+        TXT_FGColor(TXT_COLOR_RED);
         TXT_DrawString(" ");
         TXT_DrawString(separator->label);
         TXT_DrawString(" ");
@@ -111,4 +111,3 @@ txt_separator_t *TXT_NewSeparator(const char *label)
 
     return separator;
 }
-

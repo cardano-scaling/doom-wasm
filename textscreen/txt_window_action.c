@@ -43,18 +43,16 @@ static void TXT_WindowActionSizeCalc(TXT_UNCAST_ARG(action))
 static void TXT_WindowActionDrawer(TXT_UNCAST_ARG(action))
 {
     TXT_CAST_ARG(txt_window_action_t, action);
-    int hovering;
     char buf[10];
 
     TXT_GetKeyDescription(action->key, buf, sizeof(buf));
 
-    hovering = TXT_HoveringOverWidget(action);
     TXT_SetWidgetBG(action);
 
     TXT_DrawString(" ");
-    TXT_FGColor(hovering ? TXT_COLOR_BRIGHT_WHITE : TXT_COLOR_BRIGHT_GREEN);
+    TXT_FGColor(TXT_COLOR_BLUE);
     TXT_DrawString(buf);
-    TXT_FGColor(TXT_COLOR_BRIGHT_CYAN);
+    TXT_FGColor(TXT_COLOR_BLUE);
     TXT_DrawString("=");
 
     TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
@@ -78,11 +76,11 @@ static int TXT_WindowActionKeyPress(TXT_UNCAST_ARG(action), int key)
         TXT_EmitSignal(action, "pressed");
         return 1;
     }
-    
+
     return 0;
 }
 
-static void TXT_WindowActionMousePress(TXT_UNCAST_ARG(action), 
+static void TXT_WindowActionMousePress(TXT_UNCAST_ARG(action),
                                        int x, int y, int b)
 {
     TXT_CAST_ARG(txt_window_action_t, action);
@@ -166,4 +164,3 @@ txt_window_action_t *TXT_NewWindowSelectAction(txt_window_t *window)
 
     return action;
 }
-

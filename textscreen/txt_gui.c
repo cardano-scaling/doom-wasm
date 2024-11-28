@@ -191,7 +191,7 @@ void TXT_DrawSeparator(int x, int y, int w)
     data = TXT_GetScreenData();
 
     TXT_SaveColors(&colors);
-    TXT_FGColor(TXT_COLOR_BRIGHT_CYAN);
+    TXT_FGColor(TXT_COLOR_RED);
 
     if (!VALID_Y(y))
     {

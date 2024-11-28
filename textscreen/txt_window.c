@@ -351,6 +351,17 @@ void TXT_DrawWindow(txt_window_t *window)
     // Draw all widgets
 
     TXT_DrawWidget(window);
+
+    // Draw an action area, if we have one
+    widgets = (txt_widget_t *) window;
+    if (widgets->y + widgets->h < window->window_y + window->window_h - 1)
+    {
+        // Separator for action area
+        TXT_DrawSeparator(window->window_x, widgets->y + widgets->h,
+                          window->window_w);
+        // Action area at the window bottom
+        DrawActionArea(window);
+    }
 }
 
 void TXT_SetWindowPosition(txt_window_t *window,
