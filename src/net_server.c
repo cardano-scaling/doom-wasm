@@ -689,8 +689,6 @@ static void NET_SV_ParseSYN(net_packet_t *packet, net_client_t *client, net_addr
     // Activate, initialize connection
     NET_SV_InitNewClient(client, addr, protocol);
 
-    // NOTE(pi): New player connected
-    hydra_player_connected();
 
     // Save the SHA1 checksums and other details.
     memcpy(client->wad_sha1sum, data.wad_sha1sum, sizeof(sha1_digest_t));
@@ -701,6 +699,10 @@ static void NET_SV_ParseSYN(net_packet_t *packet, net_client_t *client, net_addr
     client->recording_lowres = data.lowres_turn;
     client->drone = data.drone;
     client->player_class = data.player_class;
+
+    // NOTE(pi): New player connected
+    NET_SV_AssignPlayers();
+    hydra_player_connected((*(uint32_t *)(addr->handle)), client->player_number);
 
     // Send a reply back to the client, indicating a successful connection
     // and specifying the protocol that will be used for communications.
@@ -1530,7 +1532,7 @@ static void NET_SV_RunClient(net_client_t *client)
         NET_Log("server: client at %s timed out", NET_AddrToString(client->addr));
         NET_SV_BroadcastMessage("Client '%s' timed out and disconnected", client->name);
         // NOTE(pi): Player Disconnected
-        hydra_player_disconnected();
+        hydra_player_disconnected((*(uint32_t *)(client->addr->handle)), client->player_number);
     }
 
     // Is this client disconnected?
@@ -1749,15 +1751,15 @@ EM_JS(void, hydra_game_ended, (), {
 		g.gameEnded();
 	}
 });
-EM_JS(void, hydra_player_connected, (), {
+EM_JS(void, hydra_player_connected, (uint32_t ip, int player), {
     const g = typeof window !== 'undefined' ? window : global;
 	if (!!g && !!g.playerConnected) {
-		g.playerConnected();
+		g.playerConnected(ip, player);
 	}
 });
-EM_JS(void, hydra_player_disconnected, (), {
+EM_JS(void, hydra_player_disconnected, (uint32_t ip, int player), {
     const g = typeof window !== 'undefined' ? window : global;
 	if (!!g && !!g.playerDisconnected) {
-		g.playerDisconnected();
+		g.playerDisconnected(ip, player);
 	}
 });

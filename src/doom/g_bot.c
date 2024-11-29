@@ -79,7 +79,7 @@ typedef struct bot_s {
 bot_t bot;
 
 void BOT_Monologue(const char *fmt, ...) {
-    if (false) {
+    if (true) {
         return;
     }
 

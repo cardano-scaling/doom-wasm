@@ -1117,6 +1117,8 @@ void P_UpdateSpecials (void)
 	if (!levelTimeCount)
 	    G_ExitLevel();
     }
+	// TODO(pi): if we wanted to exit level after a certain number of kills,
+	// we could do so here
     
     //	ANIMATE FLATS AND TEXTURES GLOBALLY
     for (anim = anims ; anim < lastanim ; anim++)

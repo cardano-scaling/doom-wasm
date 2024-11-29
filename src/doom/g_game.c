@@ -1320,7 +1320,11 @@ void G_DoCompleted(void)
         memcpy(wminfo.plyr[i].frags, players[i].frags, sizeof(wminfo.plyr[i].frags));
     }
 
+
+    // TODO: Pi; I think this is where we quite want to quit to avoid the intermission screen
+    printf("Next Level\n");
     gamestate = GS_INTERMISSION;
+
     viewactive = false;
     automapactive = false;
 
