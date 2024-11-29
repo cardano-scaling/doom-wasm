@@ -19,6 +19,7 @@
 
 // initialize server and wait for connections
 
+#include <stdint.h>
 void NET_SV_Init(void);
 
 // run server: check for new packets received etc.
@@ -42,8 +43,7 @@ void NET_SV_RegisterWithMaster(void);
 
 void hydra_game_started();
 void hydra_game_ended();
-void hydra_player_connected(int addr, int player_num);
-void hydra_player_disconnected(int addr, int player_num);
+void hydra_player_connected(uint32_t addr, uint32_t player_num);
+void hydra_player_disconnected(uint32_t addr, uint32_t player_num);
 
 #endif /* #ifndef NET_SERVER_H */
-

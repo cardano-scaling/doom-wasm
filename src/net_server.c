@@ -702,8 +702,11 @@ static void NET_SV_ParseSYN(net_packet_t *packet, net_client_t *client, net_addr
 
     // NOTE(pi): New player connected
     NET_SV_AssignPlayers();
-    hydra_player_connected((*(uint32_t *)(addr->handle)), client->player_number);
-
+    if (addr->handle) {
+      hydra_player_connected((*(uint32_t *)(addr->handle)), client->player_number);
+    } else {
+      hydra_player_connected(1, client->player_number);
+    }
     // Send a reply back to the client, indicating a successful connection
     // and specifying the protocol that will be used for communications.
     reply = NET_Conn_NewReliable(&client->connection, NET_PACKET_TYPE_SYN);
@@ -1745,19 +1748,20 @@ EM_JS(void, hydra_game_started, (), {
 		g.gameStarted();
 	}
 });
+
 EM_JS(void, hydra_game_ended, (), {
     const g = typeof window !== 'undefined' ? window : global;
 	if (!!g && !!g.gameEnded) {
 		g.gameEnded();
 	}
 });
-EM_JS(void, hydra_player_connected, (uint32_t ip, int player), {
+EM_JS(void, hydra_player_connected, (uint32_t ip, uint32_t player), {
     const g = typeof window !== 'undefined' ? window : global;
 	if (!!g && !!g.playerConnected) {
 		g.playerConnected(ip, player);
 	}
 });
-EM_JS(void, hydra_player_disconnected, (uint32_t ip, int player), {
+EM_JS(void, hydra_player_disconnected, (uint32_t ip, uint32_t player), {
     const g = typeof window !== 'undefined' ? window : global;
 	if (!!g && !!g.playerDisconnected) {
 		g.playerDisconnected(ip, player);
