@@ -131,7 +131,7 @@ static void NET_Hydra_SendPacket(net_addr_t *addr, net_packet_t *packet)
 
     hydra_kills = malloc(sizeof(kills));
     memcpy(hydra_kills, kills, sizeof(kills));
-    hydra_send_packet(to_ip, instanceUID, kills, sizeof(kills), hydra_packet, packet->len);
+    hydra_send_packet(to_ip, instanceUID, kills, MAXPLAYERS, hydra_packet, packet->len);
     packets_sent++;
 }
 
