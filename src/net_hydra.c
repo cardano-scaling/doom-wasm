@@ -121,7 +121,7 @@ static void NET_Hydra_SendPacket(net_addr_t *addr, net_packet_t *packet)
     for (int i=0; i < MAXPLAYERS; i++) {
         kills[i] = 0;
         for (int j=0; j< MAXPLAYERS; j++) {
-            printf("i: %d, j: %d, frags: %d", i, j, players[i].frags[j]);
+            printf("i: %d, j: %d, frags: %d\n", i, j, players[i].frags[j]);
             if (j == i) {
                 kills[i] -= players[i].frags[j];
             } else {
@@ -131,11 +131,11 @@ static void NET_Hydra_SendPacket(net_addr_t *addr, net_packet_t *packet)
     }
 
     printf("doom: hydra: kills: %d %d %d %d\n", kills[0], kills[1], kills[2], kills[3]);
-    printf("sizeof %d", sizeof(kills));
+    printf("sizeof %d\n", sizeof(kills));
     hydra_kills = malloc(sizeof(kills));
 
     memcpy(hydra_kills, kills, sizeof(kills));
-    printf("hydra_kills %d, %d, %d, %d", hydra_kills[0], hydra_kills[1], hydra_kills[2], hydra_kills[3]);
+    printf("hydra_kills %d, %d, %d, %d\n", hydra_kills[0], hydra_kills[1], hydra_kills[2], hydra_kills[3]);
     hydra_send_packet(to_ip, instanceUID, kills, MAXPLAYERS, hydra_packet, packet->len);
     packets_sent++;
 }
