@@ -11,12 +11,13 @@
 #include "doomtype.h"
 #include "net_defs.h"
 
-EM_ASYNC_JS(void, hydra_send_packet, (uint32_t to, uint32_t from, char *packet, size_t len), {
+EM_ASYNC_JS(void, hydra_send_packet, (uint32_t to, uint32_t from, uint32_t *kills, size_t kills_len, char *packet, size_t len), {
     let data = HEAPU8.subarray(packet, packet + len);
+    let kills = HEAPU8.subarray(kills, kills + kills_len);
     let g = typeof window !== "undefined" ? window : global;
     let hydra = !!g ? g.HydraMultiplayer : null;
     if (!!hydra) {
-        await hydra.SendPacket(to, from, data);
+        await hydra.SendPacket(to, from, kills, data);
     }
 })
 

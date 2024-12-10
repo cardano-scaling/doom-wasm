@@ -8,6 +8,8 @@
 #include <stdlib.h>
 
 #include "debug.h"
+#include "doom/doomdef.h"
+#include "doom/doomstat.h"
 #include "doomtype.h"
 #include "i_system.h"
 #include "m_argv.h"
@@ -104,6 +106,9 @@ static uint32_t packets_sent = 0;
 static void NET_Hydra_SendPacket(net_addr_t *addr, net_packet_t *packet)
 {
     char *hydra_packet;
+    int kills[MAXPLAYERS];
+    int *hydra_kills;
+
 
     if (!addr->handle) {
         return;
@@ -113,7 +118,20 @@ static void NET_Hydra_SendPacket(net_addr_t *addr, net_packet_t *packet)
     hydra_packet = malloc(packet->len);
     memcpy(hydra_packet, packet->data, packet->len);
 
-    hydra_send_packet(to_ip, instanceUID, hydra_packet, packet->len);
+    for (int i=0; i < MAXPLAYERS; i++) {
+        kills[i] = 0;
+        for (int j=0; j< MAXPLAYERS; j++) {
+            if (j == i) {
+                kills[i] -= players[i].frags[j];
+            } else {
+            kills[i] += players[i].frags[j];
+            }
+        }
+    }
+
+    hydra_kills = malloc(sizeof(kills));
+    memcpy(hydra_kills, kills, sizeof(kills));
+    hydra_send_packet(to_ip, instanceUID, kills, sizeof(kills), hydra_packet, packet->len);
     packets_sent++;
 }
 
@@ -175,4 +193,3 @@ net_module_t net_hydra_module = {
     NET_Hydra_InitClient,   NET_Hydra_InitServer,  NET_Hydra_SendPacket,     NET_Hydra_RecvPacket,
     NET_Hydra_AddrToString, NET_Hydra_FreeAddress, NET_Hydra_ResolveAddress,
 };
-
