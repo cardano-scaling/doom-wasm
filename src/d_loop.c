@@ -663,7 +663,9 @@ void TryRunTics(void)
     if (counts < 1) counts = 1;
 
     // wait for new tics if needed
+    int stall_count = 0;
     while (!PlayersInGame() || lowtic < gametic / ticdup + counts) {
+        stall_count += 1;
         NetUpdate();
 
         lowtic = GetLowTic();
@@ -676,11 +678,18 @@ void TryRunTics(void)
             // new network data to be received. So don't stay in here
             // forever - give the menu a chance to work.
             if (I_GetTime() / ticdup - entertic >= MAX_NETGAME_STALL_TICS) {
+                printf("Stalled waiting for network update %d times, breaking", stall_count);
                 return;
             }
 
             I_Sleep(1);
         }
+    }
+    if (stall_count > 0) {
+        printf("Stalled waiting for network update %d times, breaking", stall_count);
+    }
+    if (counts > 0) {
+        printf("Catching up with %d tics at once", counts);
     }
 
     // run the count * ticdup dics
