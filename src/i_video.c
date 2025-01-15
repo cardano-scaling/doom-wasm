@@ -752,7 +752,7 @@ void I_FinishUpdate (void)
 	if (tics > 20) tics = 20;
 
 	if (tics > 1) {
-	   printf("%d tics elapsed between frames, lower than 35 frames per second", tics);
+	   printf("%d: %d tics elapsed between frames, lower than 35 frames per second\n", i, tics);
 	}
 
 	for (i=0 ; i<tics*4 ; i+=4)

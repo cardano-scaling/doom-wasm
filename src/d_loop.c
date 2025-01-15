@@ -613,6 +613,7 @@ static void SinglePlayerClear(ticcmd_set_t *set)
 void TryRunTics(void)
 {
     int i;
+    int t;
     int lowtic;
     int entertic;
     static int oldentertics;
@@ -677,19 +678,21 @@ void TryRunTics(void)
             // If we're in a netgame, we might spin forever waiting for
             // new network data to be received. So don't stay in here
             // forever - give the menu a chance to work.
-            if (I_GetTime() / ticdup - entertic >= MAX_NETGAME_STALL_TICS) {
-                printf("Stalled waiting for network update %d times, breaking", stall_count);
+            t = I_GetTime();
+            if (t / ticdup - entertic >= MAX_NETGAME_STALL_TICS) {
+                printf("%d: Stalled waiting for network update %d times, breaking\n", t, stall_count);
                 return;
             }
 
             I_Sleep(1);
         }
     }
+    t = I_GetTime();
     if (stall_count > 0) {
-        printf("Stalled waiting for network update %d times, breaking", stall_count);
+        printf("%d: Stalled waiting for network update %d times\n", t, stall_count);
     }
     if (counts > 0) {
-        printf("Catching up with %d tics at once", counts);
+        printf("%d: Catching up with %d tics at once\n", t, counts);
     }
 
     // run the count * ticdup dics
