@@ -688,10 +688,10 @@ void TryRunTics(void)
         }
     }
     t = I_GetTime();
-    if (stall_count > 0) {
+    if (stall_count > 1) {
         printf("%d: Stalled waiting for network update %d times\n", t, stall_count);
     }
-    if (counts > 0) {
+    if (counts > 1) {
         printf("%d: Catching up with %d tics at once\n", t, counts);
     }
 
