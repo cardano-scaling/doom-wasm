@@ -72,6 +72,16 @@
 
 #include "g_game.h"
 
+// Hydra client state updates
+EM_JS(void, hydra_client_update_state, (int state), {
+    let g = typeof window !== "undefined" ? window: global;
+    let hydra = !!g ? g.HydraMultiplayer : null;
+    if(!!hydra) {
+        hydra.setState(state);
+    }
+})
+
+
 #define SAVEGAMESIZE 0x2c000
 
 void G_ReadDemoTiccmd(ticcmd_t *cmd);
@@ -565,6 +575,8 @@ void G_DoLoadLevel(void)
     if (wipegamestate == GS_LEVEL) wipegamestate = -1; // force a wipe
 
     gamestate = GS_LEVEL;
+
+    hydra_client_update_state(gamestate);
 
     for (i = 0; i < MAXPLAYERS; i++) {
         turbodetected[i] = false;
@@ -1324,6 +1336,7 @@ void G_DoCompleted(void)
     // TODO: Pi; I think this is where we quite want to quit to avoid the intermission screen
     printf("Next Level\n");
     gamestate = GS_INTERMISSION;
+    hydra_client_update_state(gamestate);
 
     viewactive = false;
     automapactive = false;
