@@ -2,7 +2,7 @@
   description = "doom-wasm";
 
   inputs = {
-    doom-wasm-flake.url = "github:cardano-scaling/doom-wasm-flake/0.3.1";
+    doom-wasm-flake.url = "github:cardano-scaling/doom-wasm-flake/0.3.2";
     flake-parts.url = "github:hercules-ci/flake-parts";
     hydra-coding-standards.url = "github:cardano-scaling/hydra-coding-standards/0.7.0";
     import-tree.url = "github:vic/import-tree";
