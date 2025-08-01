@@ -88,7 +88,7 @@ static void RunTic(ticcmd_t *cmds, boolean *ingame)
     G_Ticker();
 }
 
-static loop_interface_t doom_loop_interface = {D_ProcessEvents, G_BuildTiccmd, RunTic, M_Ticker};
+static loop_interface_t doom_loop_interface = {D_ProcessEvents, RunTic, M_Ticker};
 
 // Load game settings from the specified structure and
 // set global variables.

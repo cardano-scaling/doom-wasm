@@ -803,13 +803,17 @@ void G_Ticker(void)
         if (playeringame[i]) {
             cmd = &players[i].cmd;
 
-            memcpy(cmd, &netcmds[i], sizeof(ticcmd_t));
+            memset(cmd, 0, sizeof(ticcmd_t));
+           // memcpy(cmd, &netcmds[i], sizeof(ticcmd_t));
+            
 
             // Receive input from Hydra (the network)
             // XXX: This indicates that we could also integrate hydra via the
             // netcmds and d_net module system (like the net_websockets module)
             if(M_CheckParm("-hydra-recv") > 0) {
                 hydra_recv(cmd);
+
+            printf("Recv applied: forward=%d, side=%d, angle=%d, buttons=%u\n", cmd->forwardmove, cmd->sidemove, cmd->angleturn, cmd->buttons);
                 // Do not play demo if we are only receiving
                 if(M_CheckParm("-hydra-send") == 0) {
                     demoplayback = false;
@@ -912,26 +916,32 @@ void G_Ticker(void)
     if(M_CheckParm("-hydra-send") > 0) {
         for (i = 0; i < MAXPLAYERS; i++) {
             if (playeringame[i]) {
-                player_state = players[i].playerstate;
-                killcount = players[i].killcount;
-                secretcount = players[i].secretcount;
-                itemcount = players[i].itemcount;
-                leveltics = leveltime;
+            ticcmd_t send_cmd;
+            memset(&send_cmd, 0, sizeof(ticcmd_t));
+            G_BuildTiccmd(&send_cmd, buf);
+            player_state = players[i].playerstate;
+            killcount = players[i].killcount;
+            secretcount = players[i].secretcount;
+            itemcount = players[i].itemcount;
+            leveltics = leveltime;
 
-                mo = players[i].mo;
+            mo = players[i].mo;
 
-                if (mo) {
+            if (mo) {
+
+                printf("Built send_cmd: forward=%d, side=%d, angle=%d, button=%d, button2=%d\n", send_cmd.forwardmove, send_cmd.sidemove, send_cmd.angleturn, send_cmd.buttons, send_cmd.buttons2);
+
                 hydra_send(
-                    cmd->forwardmove,
-                    cmd->sidemove,
-                    cmd->angleturn,
-                    cmd->chatchar,
-                    cmd->buttons,
-                    cmd->consistancy,
-                    cmd->buttons2,
-                    cmd->inventory,
-                    cmd->lookfly,
-                    cmd->arti,
+                    send_cmd.forwardmove,
+                    send_cmd.sidemove,
+                    send_cmd.angleturn,
+                    send_cmd.chatchar,
+                    send_cmd.buttons,
+                    send_cmd.consistancy,
+                    send_cmd.buttons2,
+                    send_cmd.inventory,
+                    send_cmd.lookfly,
+                    send_cmd.arti,
                     player_state,
                     killcount,
                     secretcount,

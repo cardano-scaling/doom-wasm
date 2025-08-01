@@ -90,9 +90,15 @@ EM_ASYNC_JS(void, hydra_recv, (ticcmd_t *cmd), {
   if (res == null) {
      return;
   }
-  HEAP8[cmd] = res.forwardMove;
-  HEAP8[cmd+1] = res.sideMove;
-  // FIXME: integrate more ticcmd_t fields
-});
+
+  console.log("from hydraRecv:", res);
+  console.log("button2:", res.buttons2);
+  HEAP8[cmd + 0] = res.forwardMove;      // signed char
+  HEAP8[cmd + 1] = res.sideMove;         // signed char
+  HEAP16[(cmd + 2) >> 1] = res.angleTurn; // signed short (offsets 2-3)
+  HEAPU8[cmd + 4] = res.buttons;        // unsigned char
+  HEAPU8[cmd + 5] = res.buttons;        // unsigned char
+  });
+
 
 #endif

@@ -177,7 +177,7 @@ static boolean BuildNewTic(void)
 
     // printf ("mk:%i ",maketic);
     memset(&cmd, 0, sizeof(ticcmd_t));
-    loop_interface->BuildTiccmd(&cmd, maketic);
+    //loop_interface->BuildTiccmd(&cmd, maketic);
 
     if (net_client_connected) {
         NET_CL_SendTiccmd(&cmd, maketic);
