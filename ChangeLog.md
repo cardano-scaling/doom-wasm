@@ -1,5 +1,9 @@
 # ChangeLog for doom-wasm
 
+## 0.0.0.3
+
+* HACK: Automatically enter new world after results.
+
 ## 0.0.0.2
 
 * Force movement propagation through hydra_send and hydra_recv.
