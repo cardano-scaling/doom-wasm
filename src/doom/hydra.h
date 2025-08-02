@@ -91,8 +91,6 @@ EM_ASYNC_JS(void, hydra_recv, (ticcmd_t *cmd), {
      return;
   }
 
-  console.log("from hydraRecv:", res);
-  console.log("button2:", res.buttons2);
   HEAP8[cmd + 0] = res.forwardMove;      // signed char
   HEAP8[cmd + 1] = res.sideMove;         // signed char
   HEAP16[(cmd + 2) >> 1] = res.angleTurn; // signed short (offsets 2-3)

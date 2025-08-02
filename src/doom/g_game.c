@@ -759,7 +759,7 @@ void G_Ticker(void)
 
     // do things to change the game state
     while (gameaction != ga_nothing) {
-        printf("gameaction=%i", gameaction);
+        printf("gameaction=%i\n", gameaction);
         switch (gameaction) {
         case ga_loadlevel:
             G_DoLoadLevel();
@@ -813,7 +813,6 @@ void G_Ticker(void)
             if(M_CheckParm("-hydra-recv") > 0) {
                 hydra_recv(cmd);
 
-            printf("Recv applied: forward=%d, side=%d, angle=%d, buttons=%u\n", cmd->forwardmove, cmd->sidemove, cmd->angleturn, cmd->buttons);
                 // Do not play demo if we are only receiving
                 if(M_CheckParm("-hydra-send") == 0) {
                     demoplayback = false;
@@ -928,8 +927,6 @@ void G_Ticker(void)
             mo = players[i].mo;
 
             if (mo) {
-
-                printf("Built send_cmd: forward=%d, side=%d, angle=%d, button=%d, button2=%d\n", send_cmd.forwardmove, send_cmd.sidemove, send_cmd.angleturn, send_cmd.buttons, send_cmd.buttons2);
 
                 hydra_send(
                     send_cmd.forwardmove,
