@@ -749,6 +749,8 @@ void WI_initNoState(void)
     state = NoState;
     acceleratestage = 0;
     cnt = 10;
+
+	G_WorldDone();
 }
 
 void WI_updateNoState(void) {
@@ -1424,15 +1426,12 @@ void WI_updateStats(void)
     }
     else if (sp_state == 10)
     {
-	if (acceleratestage)
-	{
 	    S_StartSound(0, sfx_sgcock);
 
 	    if (gamemode == commercial)
 		WI_initNoState();
 	    else
 		WI_initShowNextLoc();
-	}
     }
     else if (sp_state & 1)
     {
